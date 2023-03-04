@@ -1,7 +1,7 @@
 """ ---------------------------------------------------------------------------
     Description
     --------------------------------------------------------------------------- 
-    Get the latest update from Microsof horrible Windows update page
+    Get the latest update from Microsoft's horrible Windows update page
     Author:         JL Dupont
     Date/version:   20230303
 """
