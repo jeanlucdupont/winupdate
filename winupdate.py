@@ -29,8 +29,8 @@ def f_getinfo(regex, string):
     ----------------------------------------------------------------------- """
 
 #  list of URLs to scrape
-urls        = ["https://support.microsoft.com/en-us/topic/windows-10-update-history-8127c2c6-6edf-4fdf-8b9f-0f7be1ef3562",
-                #"https://support.microsoft.com/en-us/topic/windows-server-2012-update-history-abfb9afd-2ebf-1c19-4224-ad86f8741edd"
+urls        = [ "https://support.microsoft.com/en-us/topic/windows-10-update-history-8127c2c6-6edf-4fdf-8b9f-0f7be1ef3562",
+                "https://support.microsoft.com/en-us/topic/windows-server-2012-update-history-abfb9afd-2ebf-1c19-4224-ad86f8741edd"
                 ]
 updates     = []  # create an empty list to store update information
 uniques     = []  # same as above but without duplicates
@@ -49,7 +49,7 @@ for url in urls:
                 las = li.find_all("a")  # find hyperlink
                 for la in las:  
                     # here we have the Windows version. Let's clean the string
-                    if "update history" in la.string:  
+                    if "update history" in la.string or "Windows Server 2012" in la.string:  
                         winver = re.sub(r'[^\x00-\x7F]+', ' ', la.string)  
                     elif "Preview" not in la.string and "Out-of-band" not in la.string:  
                         # Here we have the latest update. Let's extract the date, the KB number, and the URL
