@@ -14,6 +14,17 @@ from bs4 import BeautifulSoup
 import re  
 
 """ ---------------------------------------------------------------------------
+    Functions
+    ----------------------------------------------------------------------- """
+def f_getinfo(regex, string):
+    match = re.search(regex, string)
+    if match:
+        return str(match.group(1))
+    else:
+        return "EOL"
+
+
+""" ---------------------------------------------------------------------------
     Main
     ----------------------------------------------------------------------- """
 
@@ -40,13 +51,22 @@ for url in urls:
                     if "update history" in la.string:  
                         winver = re.sub(r'[^\x00-\x7F]+', ' ', la.string)  
                     elif "Preview" not in la.string and "Out-of-band" not in la.string:  
-                        # here we have the latest update. Let's clean the string
-                        infotext = re.sub(r'[^\x00-\x7F]+', ' ', la.string)  
-                        infotext = infotext.replace('-', ' ')  
-                        # here we have the URL to get this update
-                        url = 'https://support.microsoft.com' + re.search(r'href="([^"]+)"', str(la)).group(1)  
-                        updates.append([winver, infotext, url])  
-                        match = True  
+                        # Here we have the latest update. Let's extract the date, the KB number, and the URL
+                        print(la.string)
+                        infotext    = re.sub(r'[^\x00-\x7F]+', ' ', la.string)  
+                        infotext    = infotext.replace('-', ' ')
+                        matchdate   = re.search(r"([A-Z][a-z]+ \d{1,2}, \d{4})", infotext)
+                        matchkb     = re.search(r"KB(\d+)", infotext)
+                        matchdate   = f_getinfo(r"([A-Z][a-z]+ \d{1,2}, \d{4})", infotext)
+                        matchkb     = f_getinfo(r"(KB\d+)", infotext)
+                        print(winver)
+                        print(matchdate)
+                        print(matchkb)
+                        url         = 'https://support.microsoft.com' + re.search(r'href="([^"]+)"', str(la)).group(1)  
+                        match       = True  
+                        print(url)
+                        print('------------------------------')
+                        updates.append([winver, matchkb, matchdate, url])  
                     if match == True: 
                         break  
                 if match == True:  
