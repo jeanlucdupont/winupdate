@@ -30,7 +30,8 @@ def f_getinfo(regex, string):
 
 #  list of URLs to scrape
 urls        = ["https://support.microsoft.com/en-us/topic/windows-10-update-history-8127c2c6-6edf-4fdf-8b9f-0f7be1ef3562",
-                "https://support.microsoft.com/en-us/topic/windows-server-2012-update-history-abfb9afd-2ebf-1c19-4224-ad86f8741edd"]
+                #"https://support.microsoft.com/en-us/topic/windows-server-2012-update-history-abfb9afd-2ebf-1c19-4224-ad86f8741edd"
+                ]
 updates     = []  # create an empty list to store update information
 uniques     = []  # same as above but without duplicates
 
@@ -52,20 +53,12 @@ for url in urls:
                         winver = re.sub(r'[^\x00-\x7F]+', ' ', la.string)  
                     elif "Preview" not in la.string and "Out-of-band" not in la.string:  
                         # Here we have the latest update. Let's extract the date, the KB number, and the URL
-                        print(la.string)
                         infotext    = re.sub(r'[^\x00-\x7F]+', ' ', la.string)  
                         infotext    = infotext.replace('-', ' ')
-                        matchdate   = re.search(r"([A-Z][a-z]+ \d{1,2}, \d{4})", infotext)
-                        matchkb     = re.search(r"KB(\d+)", infotext)
                         matchdate   = f_getinfo(r"([A-Z][a-z]+ \d{1,2}, \d{4})", infotext)
                         matchkb     = f_getinfo(r"(KB\d+)", infotext)
-                        print(winver)
-                        print(matchdate)
-                        print(matchkb)
                         url         = 'https://support.microsoft.com' + re.search(r'href="([^"]+)"', str(la)).group(1)  
                         match       = True  
-                        print(url)
-                        print('------------------------------')
                         updates.append([winver, matchkb, matchdate, url])  
                     if match == True: 
                         break  
